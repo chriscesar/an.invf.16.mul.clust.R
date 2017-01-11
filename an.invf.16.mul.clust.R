@@ -11,6 +11,8 @@ cur.dat <- subset(inf.ts.W, year == cur.yr)
 rm(cur.yr,inf.ts.W)
 ### keep only 1 mm data
 cur.dat <- subset(cur.dat, method == "1.0mm")
+### remove Replicate and Year info
+cur.dat <- cur.dat[, -which(names(cur.dat) %in% c("year","rep"))]
 
 ### calculate mean values
 ### ==========================
@@ -31,7 +33,7 @@ tempdat$station <-
   as.factor(paste(tempdat$transect, substring(tempdat$shore, 1, 1),sep="."))
 ### aggregate data
 tempdat <-
-  aggregate(. ~ transect + station + shore + zone1 + zone2.1 + zone2.2 + year,
+  aggregate(. ~ transect + station + shore + zone1 + zone2.1 + zone2.2,
             data = tempdat,
             FUN = mean)
 
@@ -42,7 +44,6 @@ tempdatn <- tempdat[, nums]; rm(nums)
 ### Remove empty columns
 source("./R/summer.R")
 tempdatn <- tempdatn[, sapply(tempdatn, summer)]; rm(summer); rm(sumone)
-tempdatn <- tempdatn[, -which(names(tempdatn) %in% c("year"))]
 
 ##assign rownames
 rownames(tempdatn) <- tempdat$station
