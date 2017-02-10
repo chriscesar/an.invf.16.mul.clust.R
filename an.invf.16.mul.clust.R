@@ -42,7 +42,7 @@ tempdatn <- tempdat[, nums]; rm(nums)
 ### Remove empty columns
 source("./R/summer.R")
 tempdatn <- tempdatn[, sapply(tempdatn, summer)]; rm(summer); rm(sumone)
-tempdatn <- tempdatn[, -which(names(tempdatn) %in% c("year"))]
+tempdatn <- tempdatn[, -which(names(tempdatn) %in% c("year","rep"))]
 
 ##assign rownames
 rownames(tempdatn) <- tempdat$station
@@ -51,6 +51,7 @@ rownames(tempdatn) <- tempdat$station
 require(clustsig)
 res <- simprof(data = tempdatn, method.distance = "braycurtis",
                method.transform = "squareroot")
+### CODE BREAKS HERE.  BUT: works if I DON'T remove 'rep' (sample replicate number, which is '3' for all rows)
 
 par(mar=c(4,4,0,0))
 pl.color <- simprof.plot(res)
